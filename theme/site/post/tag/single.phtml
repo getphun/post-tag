@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->head($tag); ?>
+    <?php endif; ?>
+</head>
+<body>
+    
+    <h1><?= $tag->name ?></h1>
+    <time><?= $tag->created->format('M d, Y') ?></time>
+    
+    <article><?= $tag->about ?></article>
+    
+    <?php if($posts): ?>
+        <ol>
+            <?php foreach($posts as $post): ?>
+            <li><a href="<?= $post->page ?>"><?= $post->title ?></a></li>
+            <?php endforeach; ?>
+        </ol>
+    <?php endif; ?>
+    
+    <?php if($pagination): ?>
+        <ul>
+            <?php foreach($pagination as $label => $link): ?>
+            <li><a href="<?= $link ?>"><?= $label ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    
+    <?php if(module_exists('site-meta')): ?>
+    <?= $this->meta->foot($tag); ?>
+    <?php endif; ?>
+</body>
+</html>
