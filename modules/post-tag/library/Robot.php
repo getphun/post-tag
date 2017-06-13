@@ -62,12 +62,28 @@ class Robot
         if(!$tags)
             return $result;
         
+        $last_update = null;
         foreach($tags as $tag){
             $result[] = (object)[
                 'url'       => $tag->page,
                 'lastmod'   => $tag->updated->format('Y-m-d'),
                 'changefreq'=> 'daily',
                 'priority'  => 0.4
+            ];
+            
+            if(is_null($last_update))
+                $last_update = $tag->updated;
+            elseif($last_update < $tag->updated)
+                $last_update = $tag->updated;
+        }
+        
+        $dis = \Phun::$dispatcher;
+        if($dis->setting->post_tag_index_enable){
+            $result[] = (object)[
+                'url'       => $dis->router->to('sitePostTag'),
+                'lastmod'   => $last_update->format('Y-m-d'),
+                'changefreq'=> 'monthly',
+                'priority'  => 0.3
             ];
         }
         
