@@ -19,8 +19,6 @@ CREATE TABLE IF NOT EXISTS `post_tag_chain` (
     `user` INTEGER NOT NULL,
     `post` INTEGER NOT NULL,
     `post_tag` INTEGER NOT NULL,
-    
-    `post_status` TINYINT DEFAULT 1,
     `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
