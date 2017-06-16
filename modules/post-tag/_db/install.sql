@@ -5,7 +5,6 @@ CREATE TABLE IF NOT EXISTS `post_tag` (
     `slug` VARCHAR(50) NOT NULL UNIQUE,
     `about` TEXT,
     
-    `meta_schema` VARCHAR(20),
     `meta_title` VARCHAR(100),
     `meta_description` TEXT,
     `meta_keywords` VARCHAR(200),
