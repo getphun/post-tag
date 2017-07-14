@@ -10,6 +10,7 @@ namespace PostTag\Controller;
 use PostTag\Meta\Tag;
 use PostTag\Model\PostTag as PTag;
 use PostTag\Model\PostTagChain as PTChain;
+use Post\Model\Post;
 
 class TagController extends \SiteController
 {
@@ -65,11 +66,16 @@ class TagController extends \SiteController
             'tag' => $tag,
             'posts' => [],
             'pagination' => [],
-            'total' => 0
+            'total' => Post::countX(['tag'=>$tag->id, 'status'=>4])
         ];
         
-        // TODO
-        // get the post and pagination
+        // pagination
+        if($params['total'] > $rpp)
+            $params['pagination'] = calculate_pagination($page, $rpp, $params['total']);
+        
+        $posts = Post::getX(['tag'=>$tag->id, 'status'=>4], $rpp, $page, 'created DESC');
+        if($posts)
+            $params['posts'] = \Formatter::formatMany('post', $posts, false, false);
         
         $params['tag']->meta = Tag::single($tag);
         

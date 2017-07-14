@@ -91,6 +91,18 @@ return [
             ],
             'meta_title' => 'text',
             'meta_description' => 'text'
+        ],
+        'post' => [
+            'tag' => [
+                'type' => 'chain',
+                'model' => 'PostTag\\Model\\PostTag',
+                'chain' => [
+                    'model' => 'PostTag\\Model\\PostTagChain',
+                    'object' => 'post',
+                    'parent' => 'post_tag'
+                ],
+                'format' => 'post-tag'
+            ]
         ]
     ],
     'robot' => [
