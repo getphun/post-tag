@@ -101,6 +101,10 @@ class Tag
             ]
         ];
         
+        // my rss feed?
+        if(module_exists('robot'))
+            $single->_metas['feed'] = $dis->router->to('sitePostTagSingleFeedXML', ['slug'=>$tag->slug]);
+        
         // schemas 
         $schema = [
             '@context'      => 'http://schema.org',

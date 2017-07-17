@@ -52,13 +52,22 @@ return [
                 'rule' => '/post/tag/feed.json',
                 'handler' => 'PostTag\\Controller\\Robot::feedJson'
             ],
-            'sitePostTagSingle' => [
-                'rule' => '/post/tag/:slug',
-                'handler' => 'PostTag\\Controller\\Tag::single'
-            ],
             'sitePostTag' => [
                 'rule' => '/post/tag',
                 'handler' => 'PostTag\\Controller\\Tag::index'
+            ],
+            
+            'sitePostTagSingleFeedXML' => [
+                'rule' => '/post/tag/:slug/feed.xml',
+                'handler' => 'PostTag\\Controller\\Robot::feedSingleXml'
+            ],
+            'sitePostTagSingleFeedJSON' => [
+                'rule' => '/post/tag/:slug/feed.json',
+                'handler' => 'PostTag\\Controller\\Robot::feedSingleJson'
+            ],
+            'sitePostTagSingle' => [
+                'rule' => '/post/tag/:slug',
+                'handler' => 'PostTag\\Controller\\Tag::single'
             ]
         ]
     ],

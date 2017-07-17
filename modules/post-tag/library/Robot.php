@@ -8,6 +8,7 @@
 
 namespace PostTag\Library;
 use PostTag\Model\PostTag as PTag;
+use Post\Model\Post;
 
 class Robot
 {
@@ -49,6 +50,48 @@ class Robot
                 'updated'     => $tag->updated->format('c'),
                 'title'       => $tag->name->safe
             ];
+        }
+        
+        return $result;
+    }
+    
+    static function feedPost($tag){
+        $result = [];
+        
+        $last2days = date('Y-m-d H:i:s', strtotime('-2 days'));
+        
+        $posts = Post::getX([
+            'tag' => $tag->id,
+            'status'   => 4,
+            'updated'  => ['__op', '>=', $last2days]
+        ]);
+        
+        if(!$posts)
+            return $result;
+        
+        $posts = \Formatter::formatMany('post', $posts, false, ['content', 'user', 'category']);
+        
+        foreach($posts as $post){
+            $desc = $post->meta_description->safe;
+            if(!$desc)
+                $desc = $post->content->chars(160);
+            
+            $row = (object)[
+                'author'      => hs($post->user->fullname),
+                'description' => $desc,
+                'page'        => $post->page,
+                'published'   => $post->created->format('r'),
+                'updated'     => $post->updated->format('c'),
+                'title'       => $post->title->safe
+            ];
+            
+            if($post->category){
+                $row->categories = [];
+                foreach($post->category as $cat)
+                    $row->categories[] = $cat->name->safe;
+            }
+            
+            $result[] = $row;
         }
         
         return $result;
