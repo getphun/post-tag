@@ -58,6 +58,7 @@ return [
                 'handler' => 'PostTag\\Controller\\Robot::feedSingle'
             ],
             'sitePostTagSingle' => [
+                'priority' => 0,
                 'rule' => '/post/tag/:slug',
                 'handler' => 'PostTag\\Controller\\Tag::single'
             ]
