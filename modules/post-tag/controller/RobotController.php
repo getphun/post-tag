@@ -11,18 +11,14 @@ use PostTag\Model\PostTag as PTag;
 
 class RobotController extends \SiteController
 {
-    private function feed($type='xml'){
+    public function feedAction(){
         if(!module_exists('robot'))
             return $this->show404();
         
-        if($type === 'json' && !$this->config->robot['json'])
-            return $this->show404();
-        
-        $feed_router = $type === 'xml' ? 'sitePostTagFeedXML' : 'sitePostTagFeedJSON';
         $feed_host   = $this->setting->post_tag_index_enable ? 'sitePostTag' : 'siteHome';
         
         $feed = (object)[
-            'url'         => $this->router->to($feed_router),
+            'url'         => $this->router->to('sitePostTagFeed'),
             'description' => hs($this->setting->post_tag_index_meta_description),
             'updated'     => null,
             'host'        => $this->router->to($feed_host),
@@ -30,26 +26,23 @@ class RobotController extends \SiteController
         ];
         
         $pages = Robot::feed();
-        $this->robot->feed($feed, $pages, $type);
+        $this->robot->feed($feed, $pages);
     }
     
-    private function feedSingle($slug, $type='xml'){
+    public function feedSingleAction(){
         if(!module_exists('robot'))
             return $this->show404();
         
-        if($type === 'json' && !$this->config->robot['json'])
-            return $this->show404();
-        
+        $slug = $this->param->slug;
+            
         $tag = PTag::get(['slug'=>$slug], false);
         if(!$tag)
             return $this->show404();
         
         $tag = \Formatter::format('post-tag', $tag, false);
         
-        $feed_router = $type === 'xml' ? 'sitePostTagSingleFeedXML' : 'sitePostTagSingleFeedJSON';
-        
         $feed = (object)[
-            'url'         => $this->router->to($feed_router, ['slug'=>$tag->slug]),
+            'url'         => $this->router->to('sitePostTagSingleFeed', ['slug'=>$tag->slug]),
             'description' => hs($tag->meta_description->value != '' ? $tag->meta_description : $tag->about),
             'updated'     => null,
             'host'        => $tag->page,
@@ -57,22 +50,6 @@ class RobotController extends \SiteController
         ];
         
         $pages = Robot::feedPost($tag);
-        $this->robot->feed($feed, $pages, $type);
-    }
-    
-    public function feedXmlAction(){
-        $this->feed('xml');
-    }
-    
-    public function feedJsonAction(){
-        $this->feed('json');
-    }
-    
-    public function feedSingleXmlAction(){
-        $this->feedSingle($this->param->slug, 'xml');
-    }
-    
-    public function feedSingleJsonAction(){
-        $this->feedSingle($this->param->slug, 'json');
+        $this->robot->feed($feed, $pages);
     }
 }

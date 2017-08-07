@@ -44,26 +44,18 @@ return [
     ],
     '_routes' => [
         'site' => [
-            'sitePostTagFeedXML' => [
+            'sitePostTagFeed' => [
                 'rule' => '/post/tag/feed.xml',
-                'handler' => 'PostTag\\Controller\\Robot::feedXml'
-            ],
-            'sitePostTagFeedJSON' => [
-                'rule' => '/post/tag/feed.json',
-                'handler' => 'PostTag\\Controller\\Robot::feedJson'
+                'handler' => 'PostTag\\Controller\\Robot::feed'
             ],
             'sitePostTag' => [
                 'rule' => '/post/tag',
                 'handler' => 'PostTag\\Controller\\Tag::index'
             ],
             
-            'sitePostTagSingleFeedXML' => [
+            'sitePostTagSingleFeed' => [
                 'rule' => '/post/tag/:slug/feed.xml',
-                'handler' => 'PostTag\\Controller\\Robot::feedSingleXml'
-            ],
-            'sitePostTagSingleFeedJSON' => [
-                'rule' => '/post/tag/:slug/feed.json',
-                'handler' => 'PostTag\\Controller\\Robot::feedSingleJson'
+                'handler' => 'PostTag\\Controller\\Robot::feedSingle'
             ],
             'sitePostTagSingle' => [
                 'rule' => '/post/tag/:slug',

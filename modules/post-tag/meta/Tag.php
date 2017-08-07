@@ -43,7 +43,7 @@ class Tag
         
         // my rss feed?
         if(module_exists('robot'))
-            $index->_metas['feed'] = $dis->router->to('sitePostTagFeedXML');
+            $index->_metas['feed'] = $dis->router->to('sitePostTagFeed');
         
         // Schema
         $schema = [
@@ -103,7 +103,7 @@ class Tag
         
         // my rss feed?
         if(module_exists('robot'))
-            $single->_metas['feed'] = $dis->router->to('sitePostTagSingleFeedXML', ['slug'=>$tag->slug]);
+            $single->_metas['feed'] = $dis->router->to('sitePostTagSingleFeed', ['slug'=>$tag->slug]);
         
         // schemas 
         $schema = [
