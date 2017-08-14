@@ -61,6 +61,11 @@ return [
                 'priority' => 0,
                 'rule' => '/post/tag/:slug',
                 'handler' => 'PostTag\\Controller\\Tag::single'
+            ],
+            
+            'sitePostTagSingleMask' => [
+                'rule' => '/post/tag/:slug/mask/:post',
+                'handler' => 'PostTag\\Controller\\Tag::mask'
             ]
         ]
     ],

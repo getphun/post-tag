@@ -47,6 +47,52 @@ class TagController extends \SiteController
         $this->respond('post/tag/index', $params, $cache);
     }
     
+    public function maskAction(){
+        if(!$this->setting->post_tag_mask_enable)
+            return $this->show404();
+        
+        $slug = $this->param->slug;
+        
+        $tag = PTag::get(['slug'=>$slug], false);
+        if(!$tag)
+            return $this->show404();
+        
+        $post_slug = $this->param->post;
+        $post = Post::get(['slug'=>$post_slug, 'status'=>4], false);
+        if(!$post)
+            return $this->show404();
+        
+        $post = \Formatter::format('post', $post, ['canal']);
+            
+        $page = $this->req->getQuery('page', 1);
+        $rpp = 12;
+        
+        $cache = 60*60*24*7;
+        if($page > 1 || is_dev())
+            $cache = null;
+        
+        $tag = \Formatter::format('post-tag', $tag, false, false);
+        $params = [
+            'tag' => $tag,
+            'post' => $post,
+            'posts' => [],
+            'pagination' => [],
+            'total' => Post::countX(['tag'=>$tag->id, 'status'=>4])
+        ];
+        
+        // pagination
+        if($params['total'] > $rpp)
+            $params['pagination'] = calculate_pagination($page, $rpp, $params['total']);
+        
+        $posts = Post::getX(['tag'=>$tag->id, 'status'=>4], $rpp, $page, 'created DESC');
+        if($posts)
+            $params['posts'] = \Formatter::formatMany('post', $posts, false, ['canal']);
+        
+        $params['tag']->meta = Tag::mask($tag, $post);
+        
+        $this->respond('post/tag/single', $params, $cache);
+    }
+    
     public function singleAction(){
         $slug = $this->param->slug;
         
@@ -61,7 +107,7 @@ class TagController extends \SiteController
         if($page > 1 || is_dev())
             $cache = null;
         
-        $tag = \Formatter::format('post-tag', $tag, false, ['user']);
+        $tag = \Formatter::format('post-tag', $tag, false, false);
         $params = [
             'tag' => $tag,
             'posts' => [],
@@ -75,7 +121,7 @@ class TagController extends \SiteController
         
         $posts = Post::getX(['tag'=>$tag->id, 'status'=>4], $rpp, $page, 'created DESC');
         if($posts)
-            $params['posts'] = \Formatter::formatMany('post', $posts, false, false);
+            $params['posts'] = \Formatter::formatMany('post', $posts, false, ['canal']);
         
         $params['tag']->meta = Tag::single($tag);
         

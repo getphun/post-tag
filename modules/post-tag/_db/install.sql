@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `post_tag_chain` (
 
 INSERT IGNORE INTO `site_param` ( `name`, `type`, `group`, `value` ) VALUES
     ( 'post_tag_index_enable', 4, 'Post Tag', '0' ),
+    ( 'post_tag_mask_enable', 4, 'Post Tag', '0' ),
     ( 'post_tag_index_meta_title', 1, 'Post Tag', 'Post Tags' ),
     ( 'post_tag_index_meta_description',  5, 'Post Tag', 'List of post tags' ),
     ( 'post_tag_index_meta_keywords', 1, 'Post Tag', '' );
