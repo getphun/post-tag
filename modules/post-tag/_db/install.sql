@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `post_tag_chain` (
     `post_tag` INTEGER NOT NULL,
     `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX `by_post` ON `post_tag_chain` ( `post` );
+CREATE INDEX `by_post_tag` ON `post_tag_chain` ( `post_tag` );
 
 INSERT IGNORE INTO `site_param` ( `name`, `type`, `group`, `value` ) VALUES
     ( 'post_tag_index_enable', 4, 'Post Tag', '0' ),
