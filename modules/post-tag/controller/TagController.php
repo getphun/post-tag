@@ -52,12 +52,15 @@ class TagController extends \SiteController
             return $this->show404();
         
         $slug = $this->param->slug;
+        $post_slug = $this->param->post;
         
         $tag = PTag::get(['slug'=>$slug], false);
-        if(!$tag)
+        if(!$tag){
+            if(module_exists('slug-history'))
+                $this->slug->goto('post-tag', $slug, 'sitePostTagSingleMask', 'slug', ['post'=>$post_slug]);
             return $this->show404();
+        }
         
-        $post_slug = $this->param->post;
         $post = Post::get(['slug'=>$post_slug, 'status'=>4], false);
         if(!$post)
             return $this->show404();
@@ -97,8 +100,11 @@ class TagController extends \SiteController
         $slug = $this->param->slug;
         
         $tag = PTag::get(['slug'=>$slug], false);
-        if(!$tag)
+        if(!$tag){
+            if(module_exists('slug-history'))
+                $this->slug->goto('post-tag', $slug, 'sitePostTagSingle');
             return $this->show404();
+        }
             
         $page = $this->req->getQuery('page', 1);
         $rpp = 12;
