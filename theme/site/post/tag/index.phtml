@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
-    <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->head($index); ?>
-    <?php endif; ?>
 </head>
 <body>
     <h1>Tags</h1>
@@ -23,8 +21,6 @@
         </ul>
     <?php endif; ?>
     
-    <?php if(module_exists('site-meta')): ?>
     <?= $this->meta->foot($index); ?>
-    <?php endif; ?>
 </body>
 </html>
